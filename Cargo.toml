@@ -1,0 +1,23 @@
+[package]
+name = "vkapi2"
+version = "0.3.8"
+edition = "2021"
+repository = "https://github.com/Teyllayka/VkApi2"
+license = "MIT"
+description = "vk api wrapper for rust"
+keywords = ["vkontakte", "vk", "api", "vkontakteapi", "vkapi"]
+categories = ["api-bindings", "asynchronous"]
+readme = "README.md"
+
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+reqwest = { version = "0.11.20", features = ["json"] }
+serde = { version = "1.0.188", features = ["derive"]}
+serde_json = "1.0.107"
+
+
+[dev-dependencies]
+tokio = { version = "1", features = ["full"] }
+dotenvy = "0.15.7"
