@@ -33,59 +33,29 @@ pub async fn add_chat_user(
 
     Ok(1)
 }
-
-// pub async fn restore(api: &VkApi, params: Option<ParamGrid>) -> Result<u8, VkApiError> {
-//     let mut params = match params {
-//         Some(params) => params,
-//         None => ParamGrid::new(),
-//     };
-
-//     params.insert_if_not_exists("v", api.v);
-
-//     let key = match api.flow_key {
-//         "".to_string() => api.group_key,
-//         _ => api.flow_key
-//     };
-
-//     let response = api
-//         .client
-//         .post(format!("{}restore", API))
-//         .header("Authorization", format!("Bearer {}", api.flow_key))
-//         .form(&params.data)
-//         .send()
-//         .await?;
-
-//     if let Ok(error) = response.json::<VkError>().await {
+//
+//
+// pub async fn restore(api: &VkApi, message_id: usize, group_id: usize) -> Result<u8, VkApiError> {
+//     let mut params = ParamGrid::new();
+//     params.insert_if_not_exists("message_id", message_id);
+//     params.insert_if_not_exists("group_id", group_id);
+//
+//
+//     let response_text = send_request(
+//         &api.client,
+//         Some(params),
+//         &format!("{}restore", API),
+//         &api.flow_key,
+//         api.v,
+//     )
+//     .await?;
+//
+//     if let Ok(error) = serde_json::from_str::<VkError>(&response_text) {
 //         return Err(VkApiError::VkError(error));
-//     };
-
+//     }
+//
 //     Ok(1)
 // }
+//
 
-// pub async fn remove_chat_user(api: &VkApi, params: Option<ParamGrid>) -> Result<u8, VkApiError> {
-//     let mut params = match params {
-//         Some(params) => params,
-//         None => ParamGrid::new(),
-//     };
 
-//     params.insert_if_not_exists("v", api.v);
-
-//     let key = match api.flow_key {
-//         "".to_string() => api.group_key,
-//         _ => api.flow_key
-//     };
-
-//     let response = api
-//         .client
-//         .post(format!("{}removeChatUser", API))
-//         .header("Authorization", format!("Bearer {}", key))
-//         .form(&params.data)
-//         .send()
-//         .await?;
-
-//     if let Ok(error) = response.json::<VkError>().await {
-//         return Err(VkApiError::VkError(error));
-//     };
-
-//     Ok(1)
-// }

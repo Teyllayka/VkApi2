@@ -35,6 +35,7 @@ pub mod streaming;
 
 pub mod orders;
 
+pub mod board;
 
 
 pub struct VkApi {

@@ -166,7 +166,7 @@ let v = vkapi2::account::methods::get_info(&api, None).await?;
   - [ ] board.getTopics
   - [ ] board.openTopic
   - [ ] board.restoreComment
-  - [ ] board.unfixTopic
+  - [x] board.unfixTopic
 
 - **Bugtracker**
 
@@ -401,7 +401,7 @@ let v = vkapi2::account::methods::get_info(&api, None).await?;
 
 - **Messages**
 
-  - [ ] messages.addChatUser
+  - [x] messages.addChatUser
   - [ ] messages.allowMessagesFromGroup
   - [ ] messages.createChat
   - [ ] messages.delete
@@ -498,3 +498,8 @@ let v = vkapi2::account::methods::get_info(&api, None).await?;
   - [x] Streaming.getStem
   - [x] Streaming.getSettings
   - [x] Streaming.setSettings
+
+- **Stories**
+
+  - [x] Stories.hideReply
+
