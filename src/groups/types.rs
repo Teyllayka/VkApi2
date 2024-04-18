@@ -55,6 +55,24 @@ impl Default for AddAddressOptions {
     }
 }
 
+pub struct BanOptions {
+    pub comment: String,
+    pub end_date: usize,
+    pub reason: u8,
+    pub comment_visible: bool,
+}
+
+impl Default for BanOptions {
+    fn default() -> Self {
+        Self {
+            comment: "".to_string(),
+            end_date: 0,
+            reason: 0,
+            comment_visible: false,
+        }
+    }
+}
+
 pub struct JoinOptions {
     pub not_sure: bool,
 }

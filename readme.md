@@ -289,7 +289,7 @@ let v = vkapi2::account::methods::get_info(&api, None).await?;
   - [ ] groups.addCallbackServer
   - [x] groups.addLink
   - [ ] groups.approveRequest
-  - [ ] groups.ban
+  - [x] groups.ban
   - [ ] groups.create
   - [x] groups.deleteAddress
   - [ ] groups.deleteCallbackServer

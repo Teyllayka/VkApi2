@@ -1,5 +1,5 @@
 use crate::error::{VkApiError, VkError};
-use crate::groups::types::{AddAddressOptions, AddAddressResponse, GetOnlineStatusResponse, JoinOptions, Link};
+use crate::groups::types::{AddAddressOptions, AddAddressResponse, BanOptions, GetOnlineStatusResponse, JoinOptions, Link};
 use crate::{send_request, ParamGrid, VkApi};
 use serde_json::Value;
 
@@ -12,6 +12,14 @@ const API: &str = "https://api.vk.com/method/groups.";
 
 pub async fn add_address(api: &VkApi, group_id: usize, title: String, address: String, country_id: i32, city_id: i32, latitude: i8, longitude: i8, options: Option<AddAddressOptions>) -> Result<AddAddressResponse, VkApiError> {
     let mut params = ParamGrid::new();
+
+    let api_key = if !api.group_key.is_empty() {
+        &api.group_key
+    } else if !api.flow_key.is_empty() {
+        &api.flow_key
+    } else {
+        return Err(VkApiError::InternalError("There is no existing keys in your api object. Please set one of the keys before calling this function.".to_string()));
+    };
 
     params.insert_if_not_exists("group_id", group_id.to_string());
     params.insert_if_not_exists("address", address);
@@ -36,11 +44,12 @@ pub async fn add_address(api: &VkApi, group_id: usize, title: String, address: S
 
 
 
+
     let response_text = send_request(
         &api.client,
         Some(params),
         &format!("{}addAddress", API),
-        &api.group_key,
+        &api_key,
         api.v,
     )
     .await?;
@@ -237,6 +246,39 @@ pub async fn remove_user(api: &VkApi, group_id: usize, user_id: usize) -> Result
         &api.client,
         Some(params),
         &format!("{}removeUser", API),
+        &api.flow_key,
+        api.v,
+    )
+    .await?;
+
+    if let Ok(error) = serde_json::from_str::<VkError>(&response_text) {
+        return Err(VkApiError::VkError(error));
+    }
+
+    Ok(1)
+}
+
+pub async fn ban(api: &VkApi, group_id: usize, owner_id: i64, options: BanOptions) -> Result<u8, VkApiError> {
+    let mut params = ParamGrid::new();
+
+    params.insert_if_not_exists("group_id", group_id);
+    params.insert_if_not_exists("owner_id", owner_id);
+
+    if let Some(options) = options {
+        params.insert_if_not_exists("comment", options.comment);
+        params.insert_if_not_exists("end_date", options.end_date);
+        params.insert_if_not_exists("comment_visible", match options.comment_visible {
+            true => "1".to_string(),
+            false => "0".to_string(),
+        });
+        params.insert_if_not_exists("reason", options.reason);
+
+    }
+
+    let response_text = send_request(
+        &api.client,
+        Some(params),
+        &format!("{}ban", API),
         &api.flow_key,
         api.v,
     )
