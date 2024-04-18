@@ -21,6 +21,7 @@ let response = vkapi2::account::methods::get_info(
   &api,
   Some(GetInfoOptions {
       lang: true,
+      country: true,
       ..Default::default()
   }),
 )
@@ -31,7 +32,7 @@ let v = vkapi2::account::methods::get_info(&api, None).await?;
 ### And get your results
 
 ```rust
- println!("{:?}", v2.country);
+ println!("{:?}", v.country);
 
 ```
 
@@ -284,7 +285,7 @@ let v = vkapi2::account::methods::get_info(&api, None).await?;
 
 - **Groups**
 
-  - [ ] groups.addAddress
+  - [x] groups.addAddress
   - [ ] groups.addCallbackServer
   - [x] groups.addLink
   - [ ] groups.approveRequest

@@ -65,10 +65,7 @@ impl VkApi {
             Some(key) => key.to_string(),
             None => "".to_string(),
         };
-        let v = match v {
-            Some(ver) => ver,
-            None => 5.154,
-        };
+        let v = v.unwrap_or_else(|| 5.199);
 
         Self {
             service_key,
@@ -158,6 +155,9 @@ mod tests {
     use crate::utils::types::{GetLinkStatsOptions, Interval};
     use crate::VkApi;
     use dotenvy::dotenv;
+    use crate::account::methods::get_info;
+    use crate::account::types::GetInfoOptions;
+    use crate::groups::methods::add_address;
 
     #[tokio::test]
     async fn my_test() -> Result<(), Box<dyn std::error::Error>> {
@@ -173,13 +173,23 @@ mod tests {
             Some(service_key),
             Some(group_key),
             Some(flow_key),
-            Some(5.154),
+            Some(5.199),
         );
 
 
-        let v2 = get_settings(&api).await?;
+        // let v2 = get_settings(&api).await?;
+        //
+        // println!("{:?}", v2);
 
-        println!("{:?}", v2);
+
+        let v = add_address(&api, 222943017, "test".to_string(), "test".to_string(), 1, 1, 1, 1, None).await?;
+
+        println!("{:?}", v);
+
+
+
+
+
 
         assert!(true);
 

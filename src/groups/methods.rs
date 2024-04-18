@@ -1,9 +1,60 @@
 use crate::error::{VkApiError, VkError};
-use crate::groups::types::{GetOnlineStatusResponse, JoinOptions, Link};
+use crate::groups::types::{AddAddressOptions, AddAddressResponse, GetOnlineStatusResponse, JoinOptions, Link};
 use crate::{send_request, ParamGrid, VkApi};
 use serde_json::Value;
 
 const API: &str = "https://api.vk.com/method/groups.";
+
+
+
+
+
+
+pub async fn add_address(api: &VkApi, group_id: usize, title: String, address: String, country_id: i32, city_id: i32, latitude: i8, longitude: i8, options: Option<AddAddressOptions>) -> Result<AddAddressResponse, VkApiError> {
+    let mut params = ParamGrid::new();
+
+    params.insert_if_not_exists("group_id", group_id.to_string());
+    params.insert_if_not_exists("address", address);
+    params.insert_if_not_exists("title", title);
+    params.insert_if_not_exists("country_id", country_id);
+    params.insert_if_not_exists("city_id", city_id);
+    params.insert_if_not_exists("latitude", latitude);
+    params.insert_if_not_exists("longitude", longitude);
+
+    if let Some(options) = options {
+        params.insert_if_not_exists("additional_address", options.additional_address);
+        params.insert_if_not_exists("work_info_status", options.work_info_status);
+        //params.insert_if_not_exists("timetable", options.timetable);
+        params.insert_if_not_exists("phone", options.phone);
+        params.insert_if_not_exists("is_main_address", match options.is_main_address {
+            true => "1".to_string(),
+            false => "0".to_string(),
+        });
+    }
+
+
+
+
+
+    let response_text = send_request(
+        &api.client,
+        Some(params),
+        &format!("{}addAddress", API),
+        &api.group_key,
+        api.v,
+    )
+    .await?;
+
+    return if let Ok(error) = serde_json::from_str::<VkError>(&response_text) {
+        Err(VkApiError::VkError(error))
+    } else {
+        let json: Value = serde_json::from_str(&response_text)?;
+        let data: AddAddressResponse = serde_json::from_value(json["response"].clone())?;
+        Ok(data)
+    };
+}
+
+
 
 pub async fn add_link(
     api: &VkApi,
