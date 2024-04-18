@@ -258,7 +258,7 @@ pub async fn remove_user(api: &VkApi, group_id: usize, user_id: usize) -> Result
     Ok(1)
 }
 
-pub async fn ban(api: &VkApi, group_id: usize, owner_id: i64, options: BanOptions) -> Result<u8, VkApiError> {
+pub async fn ban(api: &VkApi, group_id: usize, owner_id: i64, options: Option<BanOptions>) -> Result<u8, VkApiError> {
     let mut params = ParamGrid::new();
 
     params.insert_if_not_exists("group_id", group_id);
