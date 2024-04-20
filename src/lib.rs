@@ -37,6 +37,11 @@ pub mod orders;
 
 pub mod board;
 
+pub enum Api {
+    Service,
+    Group,
+    Flow,
+}
 
 pub struct VkApi {
     service_key: String,
@@ -143,6 +148,16 @@ async fn send_request(
 
     Ok(response_text)
 }
+
+#[macro_export]
+macro_rules! insert_params {
+    ($params:expr, $($value:expr),* $(,)?) => {
+        $(
+            $params.insert_if_not_exists(stringify!($value), $value.to_string());
+        )*
+    };
+}
+
 
 #[cfg(test)]
 mod tests {
