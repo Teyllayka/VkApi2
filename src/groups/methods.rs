@@ -88,6 +88,7 @@ pub async fn add_callback_server(api: &VkApi, api_key: Api, group_id: usize, url
 
     if let Some(secret_key) = secret_key {
         params.insert_if_not_exists("secret_key", secret_key);
+        }
 
     let response_text = send_request(
         &api.client,
