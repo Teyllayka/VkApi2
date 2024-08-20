@@ -489,7 +489,9 @@ let v = vkapi2::account::methods::get_info(&api, None).await?;
   - [x] Wall.unpin
   - [x] Wall.delete
   - [x] Wall.deleteComment
-  - 
+  - [x] Wall.reportComment
+  - [x] Wall.reportPost
+
 - **Orders**
 
   - [x] Orders.updateSubscription
@@ -504,3 +506,9 @@ let v = vkapi2::account::methods::get_info(&api, None).await?;
 
   - [x] Stories.hideReply
 
+- **Video** 
+
+  - [x] Video.deleteComment
+  - [x] Video.reportComment
+  - [x] Video.restoreComment
+  - [x] Video.restore

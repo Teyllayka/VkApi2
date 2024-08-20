@@ -14,7 +14,7 @@ pub mod notes;
 pub mod photos;
 pub mod users;
 pub mod utils;
-
+pub mod video;
 pub mod gifts;
 pub mod likes;
 pub mod podcasts;
@@ -197,9 +197,8 @@ mod tests {
         // println!("{:?}", v2);
 
 
-        let v = add_address(&api, 222943017, "test".to_string(), "test".to_string(), 1, 1, 1, 1, None).await?;
 
-        println!("{:?}", v);
+        //println!("{:?}", v);
 
 
 

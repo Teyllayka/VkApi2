@@ -1,5 +1,5 @@
 use crate::error::{VkApiError, VkError};
-use crate::{send_request, ParamGrid, VkApi};
+use crate::{insert_params, send_request, ParamGrid, VkApi};
 
 const API: &str = "https://api.vk.com/method/wall.";
 pub async fn check_copyright_link(api: &VkApi, link: String) -> Result<u8, VkApiError> {
@@ -154,8 +154,9 @@ pub async fn delete_comment(
     comment_id: usize,
 ) -> Result<u8, VkApiError> {
     let mut params = ParamGrid::new();
-    params.insert_if_not_exists("owner_id", owner_id.to_string());
-    params.insert_if_not_exists("comment_id", comment_id.to_string());
+
+    insert_params!(&mut params, owner_id, comment_id);
+
     let response_text = send_request(
         &api.client,
         Some(params),
@@ -168,4 +169,61 @@ pub async fn delete_comment(
         return Err(VkApiError::VkError(error));
     }
     Ok(1)
+}
+
+
+pub async fn report_comment(
+    api: &VkApi,
+    owner_id: i64,
+    comment_id: usize,
+    reason: u8,
+) -> Result<u8, VkApiError> {
+
+    let mut params = ParamGrid::new();
+
+    insert_params!(&mut params, owner_id, comment_id, reason);
+
+    let response_text = send_request(
+        &api.client,
+        Some(params),
+        &format!("{}reportComment", API),
+        &api.flow_key,
+        api.v,
+    ).await?;
+
+    if let Ok(error) = serde_json::from_str::<VkError>(&response_text) {
+        return Err(VkApiError::VkError(error));
+    }
+
+
+
+    Ok(1)
+}
+
+
+pub async fn report_post(
+    api: &VkApi,
+    owner_id: i64,
+    post_id: usize,
+    reason: u8,
+) -> Result<u8, VkApiError> {
+
+    let mut params = ParamGrid::new();
+
+    insert_params!(&mut params, owner_id, post_id, reason);
+
+    let response_text = send_request(
+        &api.client,
+        Some(params),
+        &format!("{}reportPost", API),
+        &api.flow_key,
+        api.v,
+    ).await?;
+
+    if let Ok(error) = serde_json::from_str::<VkError>(&response_text) {
+        return Err(VkApiError::VkError(error));
+    }
+
+    Ok(1)
+
 }
