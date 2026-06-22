@@ -1,7 +1,6 @@
 <h1 style="text-align: center;">VkApi2</h1>
 
 [![Crates.io](https://img.shields.io/crates/v/vkapi2)](https://crates.io/crates/vkapi2)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=HPUSR7EB559TU)
 ![Crates.io](https://img.shields.io/crates/d/vkapi2)
 
 # Async Rust wrapper of [vk](https://dev.vk.com/ru/method)
